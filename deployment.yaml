@@ -1,0 +1,153 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trucktrackerweb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trucktrackerweb
+  template:
+    metadata:
+      labels:
+        app: trucktrackerweb
+    spec:
+      containers:
+      - name: trucktrackerweb
+        image: uk.icr.io/trucktracker/web:latest
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trucktrackerproducer1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trucktrackerproducer1
+  template:
+    metadata:
+      labels:
+        app: trucktrackerproducer1
+    spec:
+      containers:
+      - name: trucktrackerproducer
+        image: uk.icr.io/trucktracker/producer:latest
+        args: ["LAToDallas.json", "truck001"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trucktrackerproducer2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trucktrackerproducer2
+  template:
+    metadata:
+      labels:
+        app: trucktrackerproducer2
+    spec:
+      containers:
+      - name: trucktrackerproducer
+        image: uk.icr.io/trucktracker/producer:latest
+        args: ["LAToDallas.json", "truck002"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trucktrackerproducer3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trucktrackerproducer3
+  template:
+    metadata:
+      labels:
+        app: trucktrackerproducer3
+    spec:
+      containers:
+      - name: trucktrackerproducer
+        image: uk.icr.io/trucktracker/producer:latest
+        args: ["boulderToNYC.json", "truck003"]
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trucktrackerproducer4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trucktrackerproducer4
+  template:
+    metadata:
+      labels:
+        app: trucktrackerproducer4
+    spec:
+      containers:
+      - name: trucktrackerproducer
+        image: uk.icr.io/trucktracker/producer:latest
+        args: ["boulderToNYC.json", "truck004"]
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trucktrackerredisconsumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trucktrackerredisconsumer
+  template:
+    metadata:
+      labels:
+        app: trucktrackerredisconsumer
+    spec:
+      containers:
+      - name: trucktrackerredisconsumer
+        image: uk.icr.io/trucktracker/redisconsumer:latest
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trucktrackercloudantconsumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trucktrackercloudantconsumer
+  template:
+    metadata:
+      labels:
+        app: trucktrackercloudantconsumer
+    spec:
+      containers:
+      - name: trucktrackercloudantconsumer
+        image: uk.icr.io/trucktracker/cloudantconsumer:latest
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: trucktrackerweb
+  labels:
+    app: trucktrackerweb
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: trucktrackerweb
+  type: ClusterIP

@@ -1,0 +1,16 @@
+{
+  "name": "redisConsumer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "redisConsumer.js",
+  "scripts": {
+    "start": "node redisConsumer.js",
+    "standard": "standard --fix"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "kafkajs": "^1.15.0",
+    "redis": "^3.1.2"
+  }
+}
