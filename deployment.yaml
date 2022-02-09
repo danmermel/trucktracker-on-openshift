@@ -15,9 +15,21 @@ spec:
       containers:
       - name: trucktrackerweb
         image: uk.icr.io/trucktracker/web:latest
+        env:
+          - name: REDIS_CA
+            valueFrom:
+              secretKeyRef:
+                name: rediscreds
+                key: ca
+          - name: REDIS_URL
+            valueFrom:
+              secretKeyRef:
+                name: rediscreds
+                key: url
         ports:
           - containerPort: 8080
             protocol: TCP
+          
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -36,6 +48,47 @@ spec:
       containers:
       - name: trucktrackerproducer
         image: uk.icr.io/trucktracker/producer:latest
+        env:
+          - name: BROKER0
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker0
+          - name: BROKER1
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker1
+          - name: BROKER2
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker2
+          - name: BROKER3
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker3
+          - name: BROKER4
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker4
+          - name: BROKER5
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker5
+          - name: USER_NAME
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: user_name
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: password
         args: ["LAToDallas.json", "truck001"]
 ---
 apiVersion: apps/v1
@@ -55,6 +108,47 @@ spec:
       containers:
       - name: trucktrackerproducer
         image: uk.icr.io/trucktracker/producer:latest
+        env:
+          - name: BROKER0
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker0
+          - name: BROKER1
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker1
+          - name: BROKER2
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker2
+          - name: BROKER3
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker3
+          - name: BROKER4
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker4
+          - name: BROKER5
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker5
+          - name: USER_NAME
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: user_name
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: password
         args: ["LAToDallas.json", "truck002"]
 ---
 apiVersion: apps/v1
@@ -74,6 +168,47 @@ spec:
       containers:
       - name: trucktrackerproducer
         image: uk.icr.io/trucktracker/producer:latest
+        env:
+          - name: BROKER0
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker0
+          - name: BROKER1
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker1
+          - name: BROKER2
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker2
+          - name: BROKER3
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker3
+          - name: BROKER4
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker4
+          - name: BROKER5
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker5
+          - name: USER_NAME
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: user_name
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: password
         args: ["boulderToNYC.json", "truck003"]
 
 ---
@@ -94,6 +229,47 @@ spec:
       containers:
       - name: trucktrackerproducer
         image: uk.icr.io/trucktracker/producer:latest
+        env:
+          - name: BROKER0
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker0
+          - name: BROKER1
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker1
+          - name: BROKER2
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker2
+          - name: BROKER3
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker3
+          - name: BROKER4
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker4
+          - name: BROKER5
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker5
+          - name: USER_NAME
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: user_name
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: password
         args: ["boulderToNYC.json", "truck004"]
 
 ---
@@ -114,8 +290,57 @@ spec:
       containers:
       - name: trucktrackerredisconsumer
         image: uk.icr.io/trucktracker/redisconsumer:latest
-
-
+        env:
+          - name: REDIS_CA
+            valueFrom:
+              secretKeyRef:
+                name: rediscreds
+                key: ca
+          - name: REDIS_URL
+            valueFrom:
+              secretKeyRef:
+                name: rediscreds
+                key: url
+          - name: BROKER0
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker0
+          - name: BROKER1
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker1
+          - name: BROKER2
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker2
+          - name: BROKER3
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker3
+          - name: BROKER4
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker4
+          - name: BROKER5
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker5
+          - name: USER_NAME
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: user_name
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: password
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -134,7 +359,57 @@ spec:
       containers:
       - name: trucktrackercloudantconsumer
         image: uk.icr.io/trucktracker/cloudantconsumer:latest
-
+        env:
+          - name: API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: cloudantcreds
+                key: api_key
+          - name: CLOUDANT_URL
+            valueFrom:
+              secretKeyRef:
+                name: cloudantcreds
+                key: cloudant_url
+          - name: BROKER0
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker0
+          - name: BROKER1
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker1
+          - name: BROKER2
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker2
+          - name: BROKER3
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker3
+          - name: BROKER4
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker4
+          - name: BROKER5
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: broker5
+          - name: USER_NAME
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: user_name
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: kafkacreds
+                key: password
 ---
 kind: Service
 apiVersion: v1

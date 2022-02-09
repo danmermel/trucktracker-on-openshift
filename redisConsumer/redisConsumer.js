@@ -1,36 +1,36 @@
 // import the `Kafka` instance from the kafkajs library
 const { Kafka } = require("kafkajs")
 const topic = 'es-topic'
-const creds = require ("./creds.json")
 const redis = require("redis")
-
+const REDIS_CA = process.env.REDIS_CA  //gets the CA from the kubernetes secrets
+const REDIS_URL = process.env.REDIS_URL  // gets URL from the kubernets secrets
+const BROKER0 = process.env.BROKER0
+const BROKER1 = process.env.BROKER1
+const BROKER2 = process.env.BROKER2
+const BROKER3 = process.env.BROKER3
+const BROKER4 = process.env.BROKER4
+const BROKER5 = process.env.BROKER5
+const USER_NAME = process.env.USER_NAME
+const PASSWORD = process.env.PASSWORD
+ 
 //create Redis things
 
-const ca = Buffer.from(creds.redis_credentials.value["connection.cli.certificate.certificate_base64"], 'base64').toString('utf-8')
+//redis
+const ca = Buffer.from(REDIS_CA, 'base64').toString('utf-8')
 //console.log(ca)
-const tls = { ca };
-const url = creds.redis_credentials.value["connection.rediss.composed.0"]
-//console.log(url)
-const redisClient = redis.createClient(url, { tls: { ca: ca } })
+const redisClient = redis.createClient(REDIS_URL, { tls: { ca: ca } })
 
 //create kafka object with access credentials
 const kafka = new Kafka({
 	clientId: 'my-app',
-	brokers: [creds.eventstreams_credentials.value["kafka_brokers_sasl.0"],
-			creds.eventstreams_credentials.value["kafka_brokers_sasl.1"],
-			creds.eventstreams_credentials.value["kafka_brokers_sasl.2"],
-			creds.eventstreams_credentials.value["kafka_brokers_sasl.3"],
-			creds.eventstreams_credentials.value["kafka_brokers_sasl.4"],
-			creds.eventstreams_credentials.value["kafka_brokers_sasl.5"]
-		
-	],
+	brokers: [BROKER0, BROKER1, BROKER2, BROKER3, BROKER4, BROKER5],
 	// authenticationTimeout: 1000,
 	// reauthenticationThreshold: 10000,
 	ssl: true,
 	sasl: {
 		mechanism: 'plain', // scram-sha-256 or scram-sha-512
-		username: creds.eventstreams_credentials.value.user,
-		password: creds.eventstreams_credentials.value.password
+		username: USER_NAME,
+		password: PASSWORD
 	},
 })
 

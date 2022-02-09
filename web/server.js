@@ -2,19 +2,18 @@
 // & HTTP body parsing middleware https://www.npmjs.com/package/body-parser
 const express = require('express')
 const bodyParser = require('body-parser')
-const creds = require ("./creds.json")
 const redis = require("redis")
 
 // constants
 const PORT = 8080 // the default for Code Engine
 const HOST = '0.0.0.0' // listen on all network interfaces
+const REDIS_CA = process.env.REDIS_CA  //gets the CA from the kubernetes secrets
+const REDIS_URL = process.env.REDIS_URL  // gets URL from the kubernets secrets
 
 //redis
-const ca = Buffer.from(creds.redis_credentials.value["connection.cli.certificate.certificate_base64"], 'base64').toString('utf-8')
+const ca = Buffer.from(REDIS_CA, 'base64').toString('utf-8')
 //console.log(ca)
-const url = creds.redis_credentials.value["connection.rediss.composed.0"]
-//console.log(url)
-const redisClient = redis.createClient(url, { tls: { ca: ca } })
+const redisClient = redis.createClient(REDIS_URL, { tls: { ca: ca } })
 
 // redis does not support Promises yet. So using promisify to help there
 const { promisify } = require("util");

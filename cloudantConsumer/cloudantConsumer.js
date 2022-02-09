@@ -1,26 +1,29 @@
 // import the `Kafka` instance from the kafkajs library
 const { Kafka } = require("kafkajs")
 const topic = 'es-topic'
-const creds = require("./creds.json")
+const BROKER0 = process.env.BROKER0
+const BROKER1 = process.env.BROKER1
+const BROKER2 = process.env.BROKER2
+const BROKER3 = process.env.BROKER3
+const BROKER4 = process.env.BROKER4
+const BROKER5 = process.env.BROKER5
+const USER_NAME = process.env.USER_NAME
+const PASSWORD = process.env.PASSWORD
+const API_KEY = process.env.API_KEY
+const CLOUDANT_URL = process.env.CLOUDANT_URL
+
 
 //create kafka object with access credentials
 const kafka = new Kafka({
 	clientId: 'my-app',
-	brokers: [creds.eventstreams_credentials.value["kafka_brokers_sasl.0"],
-	creds.eventstreams_credentials.value["kafka_brokers_sasl.1"],
-	creds.eventstreams_credentials.value["kafka_brokers_sasl.2"],
-	creds.eventstreams_credentials.value["kafka_brokers_sasl.3"],
-	creds.eventstreams_credentials.value["kafka_brokers_sasl.4"],
-	creds.eventstreams_credentials.value["kafka_brokers_sasl.5"]
-
-	],
+	brokers: [BROKER0, BROKER1, BROKER2, BROKER3, BROKER4, BROKER5],
 	// authenticationTimeout: 1000,
 	// reauthenticationThreshold: 10000,
 	ssl: true,
 	sasl: {
 		mechanism: 'plain', // scram-sha-256 or scram-sha-512
-		username: creds.eventstreams_credentials.value.user,
-		password: creds.eventstreams_credentials.value.password
+		username: USER_NAME,
+		password: PASSWORD
 	},
 })
 
@@ -29,12 +32,12 @@ const { CloudantV1 } = require('@ibm-cloud/cloudant')
 
 const { IamAuthenticator } = require('ibm-cloud-sdk-core');
 const authenticator = new IamAuthenticator({
-	apikey: creds.cloudant_credentials.value.apikey
+	apikey: API_KEY
 });
 const cloudant = new CloudantV1({
 	authenticator: authenticator
 });
-cloudant.setServiceUrl(creds.cloudant_credentials.value.url);
+cloudant.setServiceUrl(CLOUDANT_URL);
 
 //create db if it doesn't exist already
 const dbName = "trucktracker"
