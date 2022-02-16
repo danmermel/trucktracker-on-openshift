@@ -1,10 +1,6 @@
-#!/bin/zsh
+#!/bin/bash
 #this script has to run after all other terraform actions have happened. 
 #So the TF command to run it has to depend_on all the other actions
-
-## remove these two lines before commiting!!
-alias docker=podman
-ibmcloud iam oauth-tokens | sed -ne '/IAM token/s/.* //p' | podman login -u iambearer --password-stdin uk.icr.io
 
 
 #first copy the terraform output to a creds file
